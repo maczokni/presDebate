@@ -5,4 +5,6 @@ It will also show associated words identified using the findAssoc() function fro
 
 It is buggy, and I'm not sure if findassoc is used in the correct way here, so if anyone has suggestions please edit!
 
+You can see the app online here: https://rekarrr.shinyapps.io/usPresidentDebateWordSearch/
+
 Data was downloaded from Kaggle: https://www.kaggle.com/mrisdal/2016-us-presidential-debates 
