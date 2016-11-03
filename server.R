@@ -22,8 +22,8 @@ shinyServer(function(input, output){
     
     output$printText <- reactive({
       #get input word from user and count number of times each candidate says it
-      folksC <- length(grep(input$word, tolower(clintonOnly$Text)))
-      folksT <- length(grep(input$word, tolower(trumpOnly$Text)))
+      folksC <- length(grep(tolower(input$word), tolower(clintonOnly$Text)))
+      folksT <- length(grep(tolower(input$word), tolower(trumpOnly$Text)))
       
       #use that to assign correct name to who said it more/ less
       whoMore <- ifelse(folksC < folksT, "Trump", "Clinton")
@@ -32,7 +32,7 @@ shinyServer(function(input, output){
       lesstimes <- ifelse(folksC > folksT, folksT, folksC)
       #paste together correct output text
       textDiff <- paste0("The word or phrase you enfered was ", 
-                         input$word, 
+                         tolower(input$word), 
                          ". This was used most frequently by ",  
                          whoMore,
                          ", who mentioned it ",
@@ -42,7 +42,7 @@ shinyServer(function(input, output){
                          lesstimes, " times).")
                          #also create text to output in case there is no difference between them 
                          textSame <- paste0("The word or phrase you enfered was ", 
-                                            input$word, ". ",
+                                            tolower(input$word), ". ",
                                             "Both candidates mentioned this word ", 
                                             moretimes, " times.")
                          
@@ -52,11 +52,11 @@ shinyServer(function(input, output){
       
     })
     output$trumpGraphText <- reactive({
-      paste0("Trump uses the following words associated with ", input$word, ": ")
+      paste0("Trump uses the following words associated with ", tolower(input$word), ": ")
     })
     
     output$clintonGraphText <- reactive({
-      paste0("Clinton uses the following words associated with ", input$word, ": ")
+      paste0("Clinton uses the following words associated with ", tolower(input$word), ": ")
     })
     
     #create corpus for each candidate to see associated words. 
@@ -71,12 +71,12 @@ shinyServer(function(input, output){
                               control = list(removePunctuation = TRUE,
                                              stopwords = TRUE))
     
-    clintonAssoc <- findAssocs(tdmClinton, input$word, 0.6)
+    clintonAssoc <- findAssocs(tdmClinton, tolower(input$word), 0.6)
     clintonAssoc <- as.data.frame(clintonAssoc)
     clintonAssoc <- setDT(clintonAssoc, keep.rownames = TRUE)[]
     names(clintonAssoc)[2] <- "corr"
     
-    trumpAssoc <- findAssocs(tdmTrump, input$word, 0.6)
+    trumpAssoc <- findAssocs(tdmTrump, tolower(input$word), 0.6)
     trumpAssoc <- as.data.frame(trumpAssoc)
     trumpAssoc <- setDT(trumpAssoc, keep.rownames = TRUE)[]
     names(trumpAssoc)[2] <- "corr"
